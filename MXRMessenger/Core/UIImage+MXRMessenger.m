@@ -28,24 +28,24 @@
     CGSize smallestImageSize = CGSizeMake(smallestImageHeight, smallestImageHeight);
     UIBezierPath* clippingPath = [UIBezierPath mxr_bezierPathForRoundedRectWithCorners:UIRectCornerAllCorners radius:minCornerRadius size:smallestImageSize];
     UIBezierPath* path = [UIBezierPath mxr_bezierPathForRoundedRectWithCorners:roundedCorners radius:maxCornerRadius size:smallestImageSize];
-    
+
     UIGraphicsBeginImageContextWithOptions(clippingPath.bounds.size, NO, 0.0f);
-    
+
     [clippingPath addClip];
     [fillColor setFill];
     [path fillWithBlendMode:kCGBlendModeCopy alpha:1];
-    
+
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+
     UIEdgeInsets capInsets = UIEdgeInsetsMake(maxCornerRadius, maxCornerRadius, maxCornerRadius, maxCornerRadius);
     result = [result resizableImageWithCapInsets:capInsets resizingMode:UIImageResizingModeStretch];
-    
+
     return result;
 }
 
 + (asimagenode_modification_block_t)mxr_imageModificationBlockToScaleToSize:(CGSize)size cornerRadius:(CGFloat)cornerRadius {
-    return ^UIImage*(UIImage *originalImage){
+    return ^UIImage*(UIImage *originalImage, ASPrimitiveTraitCollection traitCollection){
         UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
         UIBezierPath *roundOutline = [UIBezierPath mxr_bezierPathForRoundedRectWithCorners:UIRectCornerAllCorners radius:cornerRadius size:size];
         [roundOutline addClip];
@@ -57,15 +57,15 @@
 }
 
 + (asimagenode_modification_block_t)mxr_imageModificationBlockToScaleToSize:(CGSize)size maximumCornerRadius:(CGFloat)maxCornerRadius minimumCornerRadius:(CGFloat)minCornerRadius borderColor:(UIColor *)borderColor borderWidth:(CGFloat)borderWidth cornersToApplyMaxRadius:(UIRectCorner)roundedCorners {
-    return ^UIImage*(UIImage *originalImage){
+    return ^UIImage*(UIImage *originalImage, ASPrimitiveTraitCollection traitCollection){
         UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
         UIBezierPath *outerOutline = [UIBezierPath mxr_bezierPathForRoundedRectWithCorners:UIRectCornerAllCorners radius:minCornerRadius size:size];
         [outerOutline addClip];
         UIBezierPath *innerOutline = [UIBezierPath mxr_bezierPathForRoundedRectWithCorners:roundedCorners radius:maxCornerRadius size:size];
         [innerOutline addClip];
-        
+
         [originalImage drawInRect:(CGRect){CGPointZero, size} blendMode:kCGBlendModeCopy alpha:1.0f];
-        
+
         if (borderWidth > 0.0) {
             [borderColor setStroke];
             [outerOutline setLineWidth:borderWidth];
@@ -73,7 +73,7 @@
             [innerOutline setLineWidth:borderWidth];
             [innerOutline stroke];
         }
-        
+
         UIImage *modifiedImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return modifiedImage;
@@ -81,4 +81,3 @@
 }
 
 @end
-

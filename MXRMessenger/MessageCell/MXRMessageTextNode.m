@@ -19,10 +19,10 @@
 @implementation MXRMessageTextNode {
     MXRMessageTextConfiguration* _configuration;
     UIRectCorner _cornersHavingRadius;
-    
+
     BOOL _delegateImplementsTapURL;
     BOOL _delegateImplementsLongTapURL;
-    
+
     BOOL _hasLinks;
     BOOL _isTouchingURL;
 }
@@ -33,7 +33,7 @@
         self.automaticallyManagesSubnodes = YES;
         _configuration = configuration;
         _cornersHavingRadius = cornersHavingRadius;
-        
+
         _textNode = [[ASTextNode alloc] init];
         _textNode.layerBacked = YES;
         NSMutableAttributedString* attributedText = [[NSMutableAttributedString alloc] initWithString:(text ? : @"") attributes:_configuration.textAttributes];
@@ -51,12 +51,10 @@
 }
 
 - (instancetype)init {
-    ASDISPLAYNODE_NOT_DESIGNATED_INITIALIZER();
     return [self initWithText:nil configuration:nil cornersToApplyMaxRadius:UIRectCornerAllCorners];
 }
 
 - (instancetype)initWithConfiguration:(MXRMessageNodeConfiguration *)configuration {
-    ASDISPLAYNODE_NOT_DESIGNATED_INITIALIZER();
     return [self initWithText:nil configuration:nil cornersToApplyMaxRadius:UIRectCornerAllCorners];
 }
 

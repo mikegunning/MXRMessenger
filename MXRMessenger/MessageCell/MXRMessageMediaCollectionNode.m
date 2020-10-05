@@ -31,7 +31,7 @@
         _media = media;
         _maxWidth = configuration.maxWidth;
         _configuration = configuration;
-        
+
         UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
         CGFloat spacing = 2.0f;
         flowLayout.minimumInteritemSpacing = spacing;
@@ -54,12 +54,12 @@
         }
         flowLayout.itemSize = CGSizeMake(length, length);
         _itemSize = flowLayout.itemSize;
-        
+
         CGFloat totalHeight = length;
         if (media.count > 3) {
             totalHeight = (numRows * (length + flowLayout.minimumLineSpacing)) - flowLayout.minimumLineSpacing;
         }
-        
+
         _collectionNode = [[ASCollectionNode alloc] initWithCollectionViewLayout:flowLayout];
         _collectionNode.dataSource = self;
         _collectionNode.delegate = self;
@@ -70,7 +70,6 @@
 }
 
 - (instancetype)initWithConfiguration:(MXRMessageNodeConfiguration *)configuration {
-    ASDISPLAYNODE_NOT_DESIGNATED_INITIALIZER();
     return [self initWithMedia:nil configuration:nil cornersToApplyMaxRadius:UIRectCornerAllCorners];
 }
 

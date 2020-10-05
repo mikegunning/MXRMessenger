@@ -34,14 +34,14 @@
         _cornersHavingMaxRadius = cornersHavingRadius;
         _borderColor = configuration.borderColor;
         _borderWidth = configuration.borderWidth;
-        
+
         if (configuration.imageCache && configuration.imageDownloader) {
             _imageNode = [[ASNetworkImageNode alloc] initWithCache:configuration.imageCache downloader:configuration.imageDownloader];
         } else {
             _imageNode = [[ASNetworkImageNode alloc] init];
         }
         [self setImageModificationBlockForSize:configuration.placeholderImageSize];
-        
+
         if (configuration.placeholderImage) {
             _imageNode.defaultImage = configuration.placeholderImage;
         } else {
@@ -53,17 +53,16 @@
         _imageNode.contentMode = UIViewContentModeScaleAspectFill;
         _imageNode.delegate = self;
         _imageNode.URL = imageURL;
-        
+
         if (showsPlayButton) {
             _playButtonNode = [[MXRPlayButtonNode alloc] init];
         }
-        
+
     }
     return self;
 }
 
 - (instancetype)initWithConfiguration:(MXRMessageNodeConfiguration *)configuration {
-    ASDISPLAYNODE_NOT_DESIGNATED_INITIALIZER();
     return [self initWithImageURL:nil configuration:nil cornersToApplyMaxRadius:UIRectCornerAllCorners showsPlayButton:NO];
 }
 
@@ -92,14 +91,14 @@
 
 - (void)imageNode:(ASNetworkImageNode *)imageNode didLoadImage:(UIImage *)image {
     if (!image || image.size.width == 0 || image.size.height == 0) return;
-    
+
     // The next layout pass may happen after the image finishes decoding, so we need to
     // give ASyncDisplayKit a hint to its target size so it decodes correctly. This is
     // why we set its frame.
     CGFloat scaleFactor = (_maxSize.width / image.size.width);
     CGFloat scaleFactor2 = (_maxSize.height / image.size.height);
     CGFloat scale = MIN(scaleFactor2, scaleFactor);
-    
+
     CGSize newSize = CGSizeMake(image.size.width * scale, image.size.height * scale);
     _imageNode.frame = (CGRect){CGPointZero, newSize};
     [self setImageModificationBlockForSize:newSize];

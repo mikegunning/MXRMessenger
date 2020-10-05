@@ -12,7 +12,7 @@
 #import <MXRMessenger/MXRMessengerInputToolbar.h>
 
 
-@interface MXRMessengerViewController : ASViewController <MXRMessengerNode*> <ASTableDelegate>
+@interface MXRMessengerViewController : ASDKViewController <MXRMessengerNode*> <ASTableDelegate>
 
 @property (nonatomic, strong, readonly) MXRMessengerInputToolbar* toolbar;
 

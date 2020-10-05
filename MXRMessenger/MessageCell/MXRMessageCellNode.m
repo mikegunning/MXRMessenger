@@ -17,6 +17,7 @@
 - (instancetype)initWithLayoutConfiguration:(MXRMessageCellLayoutConfiguration *)layoutConfig {
     self = [super init];
     if (self) {
+        self.backgroundColor = [UIColor colorWithRed:0.04 green:0.10 blue:0.18 alpha:1.0];
         self.automaticallyManagesSubnodes = YES;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _layoutConfig = layoutConfig;
@@ -33,7 +34,7 @@
     NSMutableArray* contentChildren = [[NSMutableArray alloc] init];
     if (_avatarNode) [contentChildren addObject:_avatarNode];
     if (_messageContentNode) [contentChildren addObject:_messageContentNode];
-    
+
     if (_layoutConfig.layoutDirection == MXRMessageLayoutDirectionRightToLeft) {
         NSMutableArray* reversedContentChildren = [[NSMutableArray alloc] initWithCapacity:contentChildren.count];
         [contentChildren enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -41,7 +42,7 @@
         }];
         contentChildren = reversedContentChildren;
     }
-    
+
     if (CGSizeEqualToSize(_messageContentNode.style.preferredSize, CGSizeZero)) {
         // We enforce the maxWidth of the contentNode because it seems to be a bug in ASDK that
         // when a textNode is in a horizontal stack,
@@ -54,11 +55,11 @@
             _messageContentNode.style.maxWidth = ASDimensionMakeWithPoints(maxContentWidth);
         }
     }
-    
+
     contentStack.children = contentChildren;
-    
+
     ASInsetLayoutSpec* contentInset = [ASInsetLayoutSpec insetLayoutSpecWithInsets:_layoutConfig.avatarAndContentInset child:contentStack];
-    
+
     ASStackLayoutSpec* headerContentAndFooterStack = [ASStackLayoutSpec verticalStackLayoutSpec];
     headerContentAndFooterStack.alignItems = ASStackLayoutAlignItemsStretch;
     contentInset.style.alignSelf = _layoutConfig.layoutDirection == MXRMessageLayoutDirectionLeftToRight ? ASStackLayoutAlignSelfStart : ASStackLayoutAlignSelfEnd;
@@ -67,7 +68,7 @@
     [a addObject:contentInset];
     if (_footerNode) [a addObject:_footerNode];
     headerContentAndFooterStack.children = a;
-    
+
     return [ASInsetLayoutSpec insetLayoutSpecWithInsets:_layoutConfig.finalInset child:headerContentAndFooterStack];
 }
 
@@ -114,5 +115,3 @@
 }
 
 @end
-
-
